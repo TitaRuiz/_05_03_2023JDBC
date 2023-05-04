@@ -84,4 +84,78 @@ public class AccesoProductos extends Conexion{
         cerrar();
         return resultado;
     }
+
+    public int insertarProducto(Producto p) throws SQLException, ClassNotFoundException {
+         /*
+        1. Declarar variables
+        2. Abrir la conexion
+        3. Recoger de la conexion del statement
+        4. Ejecutar el Statement
+        5. Cerrar todo
+        6. devolver el resultado
+         */
+        Statement st;
+
+       int resultado;
+        String sql = "insert into products (product_id,product_name,discontinued ) values (" +p.getProducto_id()+",'"
+                + p.getNombre() + "', 1);";
+        abrirConexion();
+        st = miConexion.createStatement();
+        resultado  = st.executeUpdate(sql);
+
+        st.close();
+        cerrar();
+        return resultado;
+    }
+
+    public int modificarProducto(Producto p) throws SQLException, ClassNotFoundException {
+         /*
+        1. Declarar variables
+        2. Abrir la conexion
+        3. Recoger de la conexion del statement
+        4. Ejecutar el Statement
+        5. Cerrar todo
+        6. devolver el resultado
+         */
+        Statement st;
+
+        int resultado;
+        String sql = "update products set unit_price = " +
+                p.getPrecio() + " where product_id = " + p.getProducto_id() + ";";
+
+        abrirConexion();
+        st = miConexion.createStatement();
+        resultado  = st.executeUpdate(sql);
+
+        st.close();
+        cerrar();
+        return resultado;
+
+    }
+
+    public int eliminarProducto(int id) throws SQLException, ClassNotFoundException {
+
+        /*
+        1. Declarar variables
+        2. Abrir la conexion
+        3. Recoger de la conexion del statement
+        4. Ejecutar el Statement
+        5. Cerrar todo
+        6. devolver el resultado
+         */
+        Statement st;
+
+        int resultado;
+        String sql = "delete from products where product_id =" +
+                 id + ";";
+
+        abrirConexion();
+        st = miConexion.createStatement();
+        resultado  = st.executeUpdate(sql);
+
+        st.close();
+        cerrar();
+        return resultado;
+
+    }
 }
