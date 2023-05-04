@@ -1,6 +1,87 @@
 package com.hedima.persistencia;
 
+import com.hedima.modelo.Producto;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 public class AccesoProductos extends Conexion{
 
+    public Producto mostrarUno(int idProducto) throws SQLException, ClassNotFoundException {
+        /*
+        1. Declarar variables
+        2. Abrir la conexion
+        3. Recoger de la conexion del statement
+        4. Ejecutar el Statement
+        5. Recoger los datos del ResultSet
+        6. Cerrar todo
+        7. devolver el resultado
+         */
+        Statement st;
+        ResultSet rs;
+        Producto resultado = new Producto();
+        String sql = "select product_id, product_name, unit_price, units_in_stock from products where product_id = " + idProducto+";";
+        abrirConexion();
+        st = miConexion.createStatement();
+        rs = st.executeQuery(sql);
+        if (rs.next()){
+            int id = rs.getInt(1); //recoge el product_id
+            String nombre = rs.getString(2);
+            double precio = rs.getDouble(3);
+            int cantidad = rs.getInt(4);
+            resultado.setProducto_id(id);
+            resultado.setNombre(nombre);
+            resultado.setPrecio(precio);
+            resultado.setCantidad_existencia(cantidad);
+        }
+        rs.close();
+        st.close();
+        cerrar();
+        return resultado;
 
+
+    }
+
+    public List<Producto> mostrarTodos() throws SQLException, ClassNotFoundException {
+        /*
+        1. Declarar variables
+        2. Abrir la conexion
+        3. Recoger de la conexion del statement
+        4. Ejecutar el Statement
+        5. Recoger los datos del ResultSet
+        6. Cerrar todo
+        7. devolver el resultado
+         */
+        Statement st;
+        ResultSet rs;
+        List<Producto> resultado = new ArrayList<>();
+        String sql = "select product_id, product_name, unit_price, units_in_stock from products;";
+        abrirConexion();
+        st = miConexion.createStatement();
+        rs = st.executeQuery(sql);
+        while (rs.next()){
+//            int id = rs.getInt(1); //recoge el product_id
+//            String nombre = rs.getString(2);
+//            double precio = rs.getDouble(3);
+//            int cantidad = rs.getInt(4);
+//            resultado.setProducto_id(id);
+//            resultado.setNombre(nombre);
+//            resultado.setPrecio(precio);
+//            resultado.setCantidad_existencia(cantidad);
+            Producto p = new Producto(rs.getInt(1),
+                    rs.getString(2),
+                    rs.getDouble(3),
+                    rs.getInt(4)
+                    );
+            resultado.add(p);
+
+        }
+        rs.close();
+        st.close();
+        cerrar();
+        return resultado;
+    }
 }
